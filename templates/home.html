@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <div class="bg-white rounded-3xl shadow-2xl p-12 mb-8">
+            <div class="mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-6">
+                    <i class="fas fa-medal text-white text-3xl"></i>
+                </div>
+                <h1 class="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">UPSI Mock Test 2025</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">Master your UPSI exam preparation with our comprehensive mock tests designed to simulate the real exam experience</p>
+            </div>
+            
+            {% if user.is_authenticated %}
+                <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <a href="{% url 'papers' %}" class="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-play-circle text-4xl group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Start Mock Test</h3>
+                        <p class="text-blue-100">160 questions • 120 minutes</p>
+                    </a>
+                    <a href="{% url 'results' %}" class="group bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-2xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-4xl group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">View Results</h3>
+                        <p class="text-green-100">Track your progress</p>
+                    </a>
+                </div>
+            {% else %}
+                <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <a href="{% url 'login' %}" class="group bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-sign-in-alt text-4xl group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Login to Start</h3>
+                        <p class="text-blue-100">Access your account</p>
+                    </a>
+                    <a href="{% url 'register' %}" class="group bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-2xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-user-plus text-4xl group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Register Now</h3>
+                        <p class="text-purple-100">Create your account</p>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-clock text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Timed Tests</h3>
+            <p class="text-gray-600">Practice with real exam timing to improve your speed and accuracy</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-chart-bar text-green-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Progress Tracking</h3>
+            <p class="text-gray-600">Monitor your performance and identify areas for improvement</p>
+        </div>
+        <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-brain text-purple-600 text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Smart Questions</h3>
+            <p class="text-gray-600">Carefully curated questions that match the UPSI exam pattern</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

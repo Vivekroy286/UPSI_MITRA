@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'mocktest',
 ]
 
+ADMIN_SITE_HEADER = 'Mitra Administration'
+ADMIN_SITE_TITLE = 'Mitra Admin'
+ADMIN_INDEX_TITLE = 'Welcome to Mitra Administration'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',

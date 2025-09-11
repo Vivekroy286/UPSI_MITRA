@@ -35,15 +35,14 @@ class Question(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15, unique=True)
-    is_phone_verified = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user.username} - {self.phone_number}"
+        return f"{self.user.username} - {self.user.email}"
 
 class OTPVerification(models.Model):
-    phone_number = models.CharField(max_length=15)
+    email = models.EmailField()
     otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)
@@ -56,7 +55,7 @@ class OTPVerification(models.Model):
         return str(random.randint(100000, 999999))
     
     def __str__(self):
-        return f"{self.phone_number} - {self.otp}"
+        return f"{self.email} - {self.otp}"
 
 class TestResult(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

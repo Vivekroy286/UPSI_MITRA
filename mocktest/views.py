@@ -15,113 +15,44 @@ def home(request):
 
 def login_view(request):
     if request.method == 'POST':
-        phone_number = request.POST.get('phone_number')
-        otp = request.POST.get('otp')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
         
-        if phone_number and not otp:
-            # Send OTP
-            if not re.match(r'^[6-9]\d{9}$', phone_number):
-                return render(request, 'login.html', {'error': 'Invalid phone number format'})
-            
-            try:
-                profile = UserProfile.objects.get(phone_number=phone_number, is_phone_verified=True)
-                otp_code = OTPVerification.generate_otp()
-                OTPVerification.objects.create(phone_number=phone_number, otp=otp_code)
-                
-                # In production, send SMS here
-                print(f"OTP for {phone_number}: {otp_code}")
-                
-                return render(request, 'login.html', {
-                    'phone_number': phone_number,
-                    'otp_sent': True,
-                    'message': f'OTP sent to {phone_number}. Check console for OTP.'
-                })
-            except UserProfile.DoesNotExist:
-                return render(request, 'login.html', {'error': 'Phone number not registered'})
-        
-        elif phone_number and otp:
-            # Verify OTP and login
-            try:
-                otp_obj = OTPVerification.objects.filter(
-                    phone_number=phone_number, 
-                    otp=otp, 
-                    is_verified=False
-                ).latest('created_at')
-                
-                if timezone.now() > otp_obj.created_at + timedelta(minutes=5):
-                    return render(request, 'login.html', {'error': 'OTP expired. Please request a new one.'})
-                
-                otp_obj.is_verified = True
-                otp_obj.save()
-                
-                profile = UserProfile.objects.get(phone_number=phone_number)
-                login(request, profile.user)
+        try:
+            user = User.objects.get(email=email)
+            user = authenticate(request, username=user.username, password=password)
+            if user is not None:
+                login(request, user)
                 return redirect('papers')
-                
-            except OTPVerification.DoesNotExist:
-                return render(request, 'login.html', {'error': 'Invalid OTP'})
+            else:
+                return render(request, 'login.html', {'error': 'Invalid email or password'})
+        except User.DoesNotExist:
+            return render(request, 'login.html', {'error': 'Email not registered'})
     
     return render(request, 'login.html')
 
 def register_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        phone_number = request.POST.get('phone_number')
-        otp = request.POST.get('otp')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
         
-        if username and phone_number and not otp:
-            # Validate inputs
-            if not re.match(r'^[6-9]\d{9}$', phone_number):
-                return render(request, 'register.html', {'error': 'Invalid phone number format'})
-            
-            if UserProfile.objects.filter(phone_number=phone_number).exists():
-                return render(request, 'register.html', {'error': 'Phone number already registered'})
-            
-            if User.objects.filter(username=username).exists():
-                return render(request, 'register.html', {'error': 'Username already exists'})
-            
-            # Send OTP
-            otp_code = OTPVerification.generate_otp()
-            OTPVerification.objects.create(phone_number=phone_number, otp=otp_code)
-            
-            # In production, send SMS here
-            print(f"OTP for {phone_number}: {otp_code}")
-            
-            return render(request, 'register.html', {
-                'username': username,
-                'phone_number': phone_number,
-                'otp_sent': True,
-                'message': f'OTP sent to {phone_number}. Check console for OTP.'
-            })
+        # Validate inputs
+        if User.objects.filter(email=email).exists():
+            return render(request, 'register.html', {'error': 'Email already registered'})
         
-        elif username and phone_number and otp:
-            # Verify OTP and create account
-            try:
-                otp_obj = OTPVerification.objects.filter(
-                    phone_number=phone_number, 
-                    otp=otp, 
-                    is_verified=False
-                ).latest('created_at')
-                
-                if timezone.now() > otp_obj.created_at + timedelta(minutes=5):
-                    return render(request, 'register.html', {'error': 'OTP expired. Please try again.'})
-                
-                otp_obj.is_verified = True
-                otp_obj.save()
-                
-                # Create user and profile
-                user = User.objects.create_user(username=username, password='temp_password')
-                UserProfile.objects.create(
-                    user=user,
-                    phone_number=phone_number,
-                    is_phone_verified=True
-                )
-                
-                login(request, user)
-                return redirect('papers')
-                
-            except OTPVerification.DoesNotExist:
-                return render(request, 'register.html', {'error': 'Invalid OTP'})
+        if User.objects.filter(username=username).exists():
+            return render(request, 'register.html', {'error': 'Username already exists'})
+        
+        # Create user and profile
+        user = User.objects.create_user(username=username, email=email, password=password)
+        UserProfile.objects.create(
+            user=user,
+            is_email_verified=True
+        )
+        
+        login(request, user)
+        return redirect('papers')
     
     return render(request, 'register.html')
 

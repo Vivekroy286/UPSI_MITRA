@@ -21,17 +21,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <nav class="bg-white shadow-lg border-b border-blue-100">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-2 rounded-lg">
-                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+    <nav class="bg-white shadow-lg border-b border-blue-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3 sm:py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-1.5 sm:p-2 rounded-lg">
+                        <i class="fas fa-graduation-cap text-white text-lg sm:text-xl"></i>
                     </div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">UPSI Mock Test 2025</h1>
+                    <h1 class="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hidden sm:block">UPSI Mock Test 2025</h1>
+                    <h1 class="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent sm:hidden">UPSI 2025</h1>
                 </div>
+                
                 {% if user.is_authenticated %}
-                    <div class="flex items-center space-x-6">
+                    <!-- Desktop Menu -->
+                    <div class="hidden lg:flex items-center space-x-6">
                         <a href="{% url 'home' %}" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
                             <i class="fas fa-home"></i>
                             <span>Home</span>
@@ -53,15 +57,63 @@
                             <span>Logout</span>
                         </a>
                     </div>
+                    
+                    <!-- Mobile Menu -->
+                    <div class="lg:hidden flex items-center space-x-2">
+                        <div class="bg-blue-50 px-2 py-1 rounded-full">
+                            <span class="text-blue-800 font-medium text-sm">{{ user.username }}</span>
+                        </div>
+                        <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-bars text-gray-700"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Mobile Dropdown -->
+                    <div id="mobileMenu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t">
+                        <div class="px-4 py-2 space-y-2">
+                            <a href="{% url 'home' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-home text-blue-600"></i>
+                                <span class="text-gray-700">Home</span>
+                            </a>
+                            <a href="{% url 'papers' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-play-circle text-blue-600"></i>
+                                <span class="text-gray-700">Take Test</span>
+                            </a>
+                            <a href="{% url 'results' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-chart-line text-blue-600"></i>
+                                <span class="text-gray-700">Results</span>
+                            </a>
+                            <a href="{% url 'logout' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt text-red-600"></i>
+                                <span class="text-red-600">Logout</span>
+                            </a>
+                        </div>
+                    </div>
                 {% else %}
-                    <div class="flex items-center space-x-4">
-                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium">Login</a>
-                        <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg">Register</a>
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <a href="{% url 'login' %}" class="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-sm sm:text-base">Login</a>
+                        <a href="{% url 'register' %}" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 sm:px-6 py-1.5 sm:py-2 rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg text-sm sm:text-base">Register</a>
                     </div>
                 {% endif %}
             </div>
         </div>
     </nav>
+    
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobileMenu');
+            const button = event.target.closest('button');
+            if (!button && !menu.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
     
     <main class="container mx-auto mt-8 px-4 pb-12">
         {% block content %}

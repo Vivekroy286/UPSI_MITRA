@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-md mx-auto">
-    <div class="bg-white rounded-3xl shadow-2xl p-8">
-        <div class="text-center mb-8">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-mobile-alt text-white text-2xl"></i>
+<div class="max-w-md mx-auto px-4 sm:px-0">
+    <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8">
+        <div class="text-center mb-6 sm:mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-mobile-alt text-white text-xl sm:text-2xl"></i>
             </div>
-            <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Welcome Back</h2>
-            <p class="text-gray-600 mt-2">Sign in with your phone number</p>
+            <h2 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Welcome Back</h2>
+            <p class="text-gray-600 mt-2 text-sm sm:text-base">Sign in with your phone number</p>
         </div>
         
         {% if error %}
@@ -29,7 +29,7 @@
             </div>
         {% endif %}
         
-        <form method="post" class="space-y-6">
+        <form method="post" class="space-y-4 sm:space-y-6">
             {% csrf_token %}
             
             {% if not otp_sent %}
@@ -39,11 +39,11 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-mobile-alt text-gray-400"></i>
                         </div>
-                        <input type="tel" name="phone_number" required class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[6-9][0-9]{9}">
+                        <input type="tel" name="phone_number" required class="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm sm:text-base" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[6-9][0-9]{9}">
                     </div>
                     <p class="text-sm text-gray-500">Enter your registered mobile number</p>
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 sm:py-3 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-sm sm:text-base">
                     <i class="fas fa-paper-plane mr-2"></i>
                     Send OTP
                 </button>
